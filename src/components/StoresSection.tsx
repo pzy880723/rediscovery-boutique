@@ -1,20 +1,28 @@
 import { motion } from "framer-motion";
 import { MapPin, Star } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
-const stores = [
-  {
-    name: "BOOMER OFF 中信泰富店",
-    address: "上海市静安区南京西路1168号中信泰富广场B1层",
-    tag: "国内首店，品类最全的旗舰空间",
-  },
-  {
-    name: "BOOMER OFF 728space店",
-    address: "上海市闵行区东川路728号 728space",
-    tag: "更具社区气息，是周边居民和学生的宝藏后花园",
-  },
-];
+type Store = {
+  id: string;
+  name: string;
+  address: string;
+  feature_tag: string | null;
+};
 
 const StoresSection = () => {
+  const [stores, setStores] = useState<Store[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("stores")
+      .select("*")
+      .order("sort_order")
+      .then(({ data }) => {
+        if (data) setStores(data);
+      });
+  }, []);
+
   return (
     <section id="stores" className="py-24 md:py-32 px-6 bg-secondary">
       <div className="max-w-5xl mx-auto">
@@ -37,7 +45,7 @@ const StoresSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {stores.map((store, i) => (
             <motion.div
-              key={store.name}
+              key={store.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
@@ -51,10 +59,12 @@ const StoresSection = () => {
                 <MapPin className="w-4 h-4 mt-0.5 text-primary shrink-0" />
                 <span>{store.address}</span>
               </div>
-              <div className="flex items-start gap-2 text-muted-foreground text-sm">
-                <Star className="w-4 h-4 mt-0.5 text-primary shrink-0" />
-                <span>{store.tag}</span>
-              </div>
+              {store.feature_tag && (
+                <div className="flex items-start gap-2 text-muted-foreground text-sm">
+                  <Star className="w-4 h-4 mt-0.5 text-primary shrink-0" />
+                  <span>{store.feature_tag}</span>
+                </div>
+              )}
             </motion.div>
           ))}
         </div>
