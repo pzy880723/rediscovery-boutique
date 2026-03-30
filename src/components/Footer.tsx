@@ -14,8 +14,8 @@ const Footer = () => {
           {/* Contact */}
           <div>
             <h4 className="text-sm font-bold text-background mb-3">联系我们</h4>
-            <p className="text-sm mb-1">邮箱：contact@boomeroff.com</p>
-            <p className="text-sm">电话：021-XXXX-XXXX</p>
+            <p className="text-sm mb-1">邮箱：87113811@qq.com</p>
+            <p className="text-sm">电话：18657433310</p>
           </div>
 
           {/* Social */}
