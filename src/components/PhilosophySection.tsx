@@ -31,7 +31,7 @@ const philosophies = [
 
 const PhilosophySection = () => {
   return (
-    <section id="philosophy" className="py-24 md:py-32 px-6 bg-background">
+    <section id="philosophy" className="py-24 md:py-32 px-6 bg-[hsl(30,20%,95%)]">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -54,12 +54,12 @@ const PhilosophySection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="group p-8 rounded-xl border border-border bg-card hover:shadow-lg transition-shadow duration-300"
+              className="group p-8 rounded-xl bg-white/70 backdrop-blur-sm border border-[hsl(30,15%,88%)] hover:shadow-lg hover:bg-white/90 transition-all duration-300"
             >
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
                 <p.icon className="w-5 h-5 text-primary" />
               </div>
-              <h3 className="font-display text-lg font-bold text-card-foreground mb-3">
+              <h3 className="font-display text-lg font-bold text-foreground mb-3">
                 {p.title}
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
