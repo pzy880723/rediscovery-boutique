@@ -1,0 +1,7 @@
+UPDATE categories SET image_url = 'https://ebgbbptgqzpnzilnwces.supabase.co/storage/v1/object/public/images/categories%2Fvintage-toys.jpg' WHERE id = '0020c79c-1bab-4228-9394-e5943d6b5ee8';
+UPDATE categories SET image_url = 'https://ebgbbptgqzpnzilnwces.supabase.co/storage/v1/object/public/images/categories%2Fporcelain.jpg' WHERE id = '713f0da0-66f9-4847-8516-34084efda42b';
+UPDATE categories SET image_url = 'https://ebgbbptgqzpnzilnwces.supabase.co/storage/v1/object/public/images/categories%2Fvintage-jewelry.jpg' WHERE id = '8ed553b8-9d44-4059-a0ed-5decee2666ad';
+UPDATE categories SET image_url = 'https://ebgbbptgqzpnzilnwces.supabase.co/storage/v1/object/public/images/categories%2Fvinyl-records.jpg' WHERE id = '557783a1-becf-4b88-8cd5-2456c5cd1853';
+UPDATE categories SET image_url = 'https://ebgbbptgqzpnzilnwces.supabase.co/storage/v1/object/public/images/categories%2Fretro-tech.jpg' WHERE id = '4117cc67-d727-4d79-b9d9-f2f5cf295e74';
+UPDATE categories SET image_url = 'https://ebgbbptgqzpnzilnwces.supabase.co/storage/v1/object/public/images/categories%2Fplush-toys.jpg' WHERE id = 'a2e0cda2-87af-4a24-bd87-a06052be03a4';
+UPDATE categories SET image_url = 'https://ebgbbptgqzpnzilnwces.supabase.co/storage/v1/object/public/images/categories%2Fpop-culture.jpg' WHERE id = '419fa735-f421-488b-acda-ee80560ce6ff';
