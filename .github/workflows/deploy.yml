@@ -1,0 +1,35 @@
+name: Deploy to CloudBase
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install Yarn
+      run: npm install -g yarn
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Build project
+      run: yarn build
+
+    - name: Deploy to CloudBase
+      uses: cloudbase/cloudbase-action@v2
+      with:
+        secret***: ${{ secret*** }}
+        secretKey: ${{ *** }}
+        envId: boomeroffcoweb-1ghlzl7x0b562981
+        staticSrcPath: ./dist
