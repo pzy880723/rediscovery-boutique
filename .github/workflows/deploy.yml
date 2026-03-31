@@ -23,23 +23,32 @@ jobs:
     - name: Build project
       run: npm run build
 
-    - name: Deploy files via SCP
-      uses: appleboy/scp-action@v0.1.7
+    - name: Prepare deploy directory on server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        password: ${{ secrets.SERVER_PASS }}
+        script: sudo mkdir -p /tmp/deploy && sudo chown -R ubuntu:ubuntu /tmp/deploy
+
+    - name: Upload dist via SCP
+      uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USER }}
         password: ${{ secrets.SERVER_PASS }}
         source: "dist"
-        target: "/var/www/boomeroff"
-        overwrite: true
+        target: "/tmp/deploy"
+        strip_components: 1
 
-    - name: Set file permissions
+    - name: Move to web root and cleanup
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USER }}
         password: ${{ secrets.SERVER_PASS }}
         script: |
-          sudo chown -R www-data:www-data /var/www/boomeroff/dist
-          sudo cp -r /var/www/boomeroff/dist/* /var/www/boomeroff/
-          sudo rm -rf /var/www/boomeroff/dist
+          sudo rm -rf /var/www/boomeroff/*
+          sudo cp -a /tmp/deploy/. /var/www/boomeroff/
+          sudo chown -R www-data:www-data /var/www/boomeroff/
+          sudo rm -rf /tmp/deploy
