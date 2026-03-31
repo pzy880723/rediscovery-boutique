@@ -29,7 +29,7 @@ jobs:
     - name: Deploy to CloudBase
       uses: cloudbase/cloudbase-action@v2
       with:
-        secret***: ${{ secret*** }}
+secret***: ${{ secret*** }}
         secretKey: ${{ *** }}
         envId: boomeroffcoweb-1ghlzl7x0b562981
         staticSrcPath: ./dist
