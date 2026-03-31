@@ -29,18 +29,17 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USER }}
         password: ${{ secrets.SERVER_PASS }}
-        source: "dist/*"
-        target: "/tmp/dist/"
-        strip_components: 1
+        source: "dist"
+        target: "/var/www/boomeroff"
+        overwrite: true
 
-    - name: Move files and set permissions
+    - name: Set file permissions
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USER }}
         password: ${{ secrets.SERVER_PASS }}
         script: |
-          sudo rm -rf /var/www/boomeroff/*
-          sudo cp -r /tmp/dist/* /var/www/boomeroff/
-          sudo chown -R www-data:www-data /var/www/boomeroff/
-          sudo rm -rf /tmp/dist/*
+          sudo chown -R www-data:www-data /var/www/boomeroff/dist
+          sudo cp -r /var/www/boomeroff/dist/* /var/www/boomeroff/
+          sudo rm -rf /var/www/boomeroff/dist
