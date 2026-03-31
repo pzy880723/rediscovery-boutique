@@ -1,8 +1,8 @@
-name: Deploy to CloudBase
+name: Deploy to Server
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
 
 jobs:
   build-and-deploy:
@@ -17,19 +17,22 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install Yarn
-      run: npm install -g yarn
-
     - name: Install dependencies
-      run: yarn install
+      run: npm install
 
     - name: Build project
-      run: yarn build
+      run: npm run build
 
-    - name: Deploy to CloudBase
-      uses: cloudbase/cloudbase-action@v2
-      with:
-secret***: ${{ secret*** }}
-        secretKey: ${{ *** }}
-        envId: boomeroffcoweb-1ghlzl7x0b562981
-        staticSrcPath: ./dist
+    - name: Install sshpass
+      run: sudo apt-get update && sudo apt-get install -y sshpass
+
+    - name: Deploy to server
+      env:
+        SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        SERVER_PASS: ${{ secrets.SERVER_PASS }}
+        SERVER_PATH: ${{ secrets.SERVER_PATH }}
+      run: |
+        sshpass -p "$SERVER_PASS" ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_HOST} "sudo rm -rf ${SERVER_PATH}/*"
+        sshpass -p "$SERVER_PASS" scp -o StrictHostKeyChecking=no -r ./dist/* ${SERVER_USER}@${SERVER_HOST}:/tmp/dist/
+        sshpass -p "$SERVER_PASS" ssh -o StrictHostKeyChecking=no ${SERVER_USER}@${SERVER_HOST} "sudo cp -r /tmp/dist/* ${SERVER_PATH}/ && sudo chown -R www-data:www-data ${SERVER_PATH}/ && sudo rm -rf /tmp/dist/*"
