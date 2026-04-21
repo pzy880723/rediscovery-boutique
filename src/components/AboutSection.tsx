@@ -10,10 +10,12 @@ const AboutSection = () => {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7 }}
         >
-          <p className="text-xs tracking-[0.3em] text-primary uppercase mb-2">私たちの物語</p>
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-10">
-            我们的故事
-          </h2>
+          <div className="text-center">
+            <p className="text-xs tracking-[0.3em] text-primary uppercase mb-2">私たちの物語</p>
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-10">
+              我们的故事
+            </h2>
+          </div>
 
           <div className="space-y-6 text-muted-foreground leading-relaxed text-sm md:text-base">
             <p>
