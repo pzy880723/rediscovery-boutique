@@ -7,7 +7,7 @@ const Footer = () => {
           <div>
             <h4 className="font-display text-lg font-bold text-background mb-3">BOOMER OFF</h4>
             <p className="text-sm leading-relaxed">
-              宝暮（上海）商贸有限公司
+              宝暮（上海）品牌管理有限公司
             </p>
           </div>
 
@@ -34,7 +34,7 @@ const Footer = () => {
             <span className="hover:text-background transition-colors cursor-pointer">隐私政策</span>
             <span className="hover:text-background transition-colors cursor-pointer">用户协议</span>
           </div>
-          <p>沪ICP备XXXXXXXX号 © {new Date().getFullYear()} BOOMER OFF. All rights reserved.</p>
+          <p>沪ICP备2026013612号 © {new Date().getFullYear()} BOOMER OFF. All rights reserved.</p>
         </div>
       </div>
     </footer>
