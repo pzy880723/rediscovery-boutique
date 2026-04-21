@@ -46,14 +46,14 @@ const GallerySection = () => {
   const next = () => setLightboxIndex((i) => (i === null ? i : (i + 1) % images.length));
 
   return (
-    <section className="py-20 md:py-28 bg-secondary">
+    <section className="py-12 md:py-16 bg-secondary">
       <div className="max-w-7xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="mb-8 flex items-end justify-between gap-4"
+          className="mb-6 flex items-end justify-between gap-4"
         >
           <div>
             <p className="text-xs tracking-[0.3em] text-primary uppercase mb-2">店内一隅</p>
