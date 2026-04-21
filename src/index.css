@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=ZCOOL+KuaiLe&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -84,7 +84,7 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Yuanti SC', 'ZCOOL KuaiLe', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 
   html {
@@ -94,7 +94,7 @@
 
 @layer utilities {
   .font-display {
-    font-family: 'Fredoka', 'Yuanti SC', 'ZCOOL KuaiLe', 'PingFang SC', sans-serif;
+    font-family: 'Fredoka', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   }
   .scrollbar-hide {
     -ms-overflow-style: none;
