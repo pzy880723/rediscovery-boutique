@@ -53,18 +53,16 @@ const GallerySection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="mb-6 flex items-end justify-between gap-4"
+          className="mb-6 text-center"
         >
-          <div>
-            <p className="text-xs tracking-[0.3em] text-primary uppercase mb-2">店内一隅</p>
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">
-              走进 BOOMER OFF
-            </h2>
-          </div>
+          <p className="text-xs tracking-[0.3em] text-primary uppercase mb-2">店内一隅</p>
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+            走进 BOOMER OFF
+          </h2>
           <Button
             variant="outline"
             onClick={() => setShowAll(true)}
-            className="shrink-0"
+            size="sm"
           >
             查看全部
           </Button>
