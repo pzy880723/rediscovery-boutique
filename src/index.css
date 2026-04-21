@@ -96,4 +96,11 @@
   .font-display {
     font-family: 'Fredoka', 'Yuanti SC', 'ZCOOL KuaiLe', 'PingFang SC', sans-serif;
   }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
