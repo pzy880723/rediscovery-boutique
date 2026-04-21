@@ -7,6 +7,7 @@ import BannerManager from "@/components/admin/BannerManager";
 import CategoryManager from "@/components/admin/CategoryManager";
 import NewsManager from "@/components/admin/NewsManager";
 import StoreManager from "@/components/admin/StoreManager";
+import GalleryManager from "@/components/admin/GalleryManager";
 import AdminLogin from "@/pages/AdminLogin";
 
 const AdminDashboard = () => {
@@ -52,6 +53,7 @@ const AdminDashboard = () => {
       <main className="max-w-5xl mx-auto px-6 py-8 space-y-8">
         <BannerManager />
         <CategoryManager />
+        <GalleryManager />
         <NewsManager />
         <StoreManager />
       </main>
