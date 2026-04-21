@@ -24,14 +24,14 @@ const StoresSection = () => {
   }, []);
 
   return (
-    <section id="stores" className="py-24 md:py-32 px-6 bg-secondary">
+    <section id="stores" className="py-16 md:py-20 px-6 bg-secondary">
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7 }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
           <p className="text-xs tracking-[0.3em] text-primary uppercase mb-2">店舗情報</p>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">

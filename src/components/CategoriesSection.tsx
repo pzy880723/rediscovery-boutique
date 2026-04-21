@@ -36,7 +36,7 @@ const CategoriesSection = () => {
 
   return (
     <section id="categories" className="bg-background">
-      <div className="py-24 md:py-32 px-6 max-w-5xl mx-auto text-center">
+      <div className="py-16 md:py-20 px-6 max-w-5xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -64,7 +64,7 @@ const CategoriesSection = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8 }}
-            className={`relative min-h-[60vh] md:min-h-[70vh] flex items-center justify-center ${!hasImage ? fallback.bg : ""}`}
+            className={`relative min-h-[45vh] md:min-h-[55vh] flex items-center justify-center ${!hasImage ? fallback.bg : ""}`}
             style={hasImage ? { backgroundImage: `url(${cat.image_url})`, backgroundSize: "cover", backgroundPosition: "center" } : undefined}
           >
             <div className={`absolute inset-0 ${hasImage ? "bg-black/50" : `bg-gradient-to-t ${fallback.gradient}`}`} />
