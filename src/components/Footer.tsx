@@ -34,7 +34,16 @@ const Footer = () => {
             <span className="hover:text-background transition-colors cursor-pointer">隐私政策</span>
             <span className="hover:text-background transition-colors cursor-pointer">用户协议</span>
           </div>
-          <p>沪ICP备2026013612号 © {new Date().getFullYear()} BOOMER OFF. All rights reserved.</p>
+          <p className="flex items-center gap-3">
+            <span>沪ICP备2026013612号 © {new Date().getFullYear()} BOOMER OFF. All rights reserved.</span>
+            <a
+              href="/admin/login"
+              className="text-background/30 hover:text-background/70 transition-colors"
+              aria-label="后台入口"
+            >
+              ·
+            </a>
+          </p>
         </div>
       </div>
     </footer>
