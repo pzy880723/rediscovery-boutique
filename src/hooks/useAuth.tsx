@@ -5,6 +5,7 @@ import type { Session } from "@supabase/supabase-js";
 interface SignInResult {
   error: string | null;
   session: Session | null;
+  isAdmin?: boolean;
 }
 
 interface AuthContextType {
@@ -12,6 +13,7 @@ interface AuthContextType {
   isAdmin: boolean;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<SignInResult>;
+  verifyAdmin: (userId: string) => Promise<boolean>;
   signOut: () => Promise<void>;
 }
 
@@ -30,19 +32,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authReady, setAuthReady] = useState(false);
 
   const checkAdmin = useCallback(async (userId: string) => {
-    const { data, error } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .eq("role", "admin")
-      .maybeSingle();
+    const { data, error } = await supabase.rpc("has_role", {
+      _role: "admin",
+      _user_id: userId,
+    });
 
     if (error) {
       console.error("Failed to check admin role", error);
       return false;
     }
 
-    return !!data;
+    return Boolean(data);
   }, []);
 
   useEffect(() => {
@@ -88,8 +88,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return { error: error.message, session: null };
       }
 
-      return { error: null, session: data.session ?? null };
+      if (!data.session?.user) {
+        return { error: null, session: null };
+      }
+
+      const hasAdminRole = await checkAdmin(data.session.user.id);
+      setSession(data.session);
+      setIsAdmin(hasAdminRole);
+      setAuthReady(true);
+      setLoading(false);
+
+      return { error: null, session: data.session, isAdmin: hasAdminRole };
     } catch (err) {
+      setLoading(false);
       return {
         error: err instanceof Error ? err.message : "登录失败，请稍后重试",
         session: null,
@@ -106,7 +117,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ session, isAdmin, loading, signIn, signOut }}>
+    <AuthContext.Provider value={{ session, isAdmin, loading, signIn, verifyAdmin: checkAdmin, signOut }}>
       {children}
     </AuthContext.Provider>
   );

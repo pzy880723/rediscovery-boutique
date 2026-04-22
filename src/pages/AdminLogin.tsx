@@ -31,7 +31,7 @@ const translateAuthError = (msg: string): string => {
 };
 
 const AdminLogin = () => {
-  const { signIn, signOut, session, isAdmin, loading } = useAuth();
+  const { signIn, signOut, session, isAdmin, loading, verifyAdmin } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,19 +39,44 @@ const AdminLogin = () => {
   const [phase, setPhase] = useState<Phase>("idle");
 
   useEffect(() => {
-    if (phase === "checking-role" && session && !loading) {
+    if (phase === "checking-role" && session?.user && !loading) {
+      void verifyAdmin(session.user.id).then((hasAdminRole) => {
+        if (hasAdminRole) {
+          setPhase("success");
+          navigate("/admin", { replace: true });
+          return;
+        }
+
+        setError("该账号已通过身份验证，但未分配管理员权限，因此无法进入后台。请联系管理员授予 admin 角色。");
+        setPhase("idle");
+        setPassword("");
+        void signOut();
+      });
+      return;
+    }
+
+    if (phase === "checking-role" && !session && !loading) {
+      setError("登录状态未成功写入本地会话，请刷新页面后重试。");
+      setPhase("idle");
+      setPassword("");
+    }
+  }, [phase, session, loading, navigate, signOut, verifyAdmin]);
+
+  useEffect(() => {
+    if (phase !== "idle" || !session || !isAdmin) return;
+
+    navigate("/admin", { replace: true });
+  }, [phase, session, isAdmin, navigate]);
+
+  useEffect(() => {
+    if (session && isAdmin && phase === "checking-role") {
       if (isAdmin) {
         setPhase("success");
         navigate("/admin", { replace: true });
         return;
       }
-
-      setError("该账号已通过身份验证，但未分配管理员权限，因此无法进入后台。请联系管理员授予 admin 角色。");
-      setPhase("idle");
-      setPassword("");
-      void signOut();
     }
-  }, [phase, session, loading, isAdmin, navigate, signOut]);
+  }, [session, isAdmin, phase, navigate]);
 
   useEffect(() => {
     if (phase !== "authenticating" && phase !== "checking-role") return;
@@ -87,6 +112,20 @@ const AdminLogin = () => {
       setError("登录成功，但未能建立有效会话，请刷新页面后重试。");
       setPhase("idle");
       setPassword("");
+      return;
+    }
+
+    if (result.isAdmin === false) {
+      setError("该账号登录成功，但没有管理员权限，无法进入后台。请联系管理员授予 admin 角色。");
+      setPhase("idle");
+      setPassword("");
+      void signOut();
+      return;
+    }
+
+    if (result.isAdmin) {
+      setPhase("success");
+      navigate("/admin", { replace: true });
       return;
     }
 
