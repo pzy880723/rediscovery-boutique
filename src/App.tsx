@@ -8,6 +8,7 @@ import Index from "./pages/Index.tsx";
 import AdminLogin from "./pages/AdminLogin.tsx";
 import AdminLayout from "./pages/admin/AdminLayout.tsx";
 import AdminOverview from "./pages/admin/AdminOverview.tsx";
+import HomepageSectionsPage from "./pages/admin/HomepageSectionsPage.tsx";
 import BannersPage from "./pages/admin/BannersPage.tsx";
 import AchievementsPage from "./pages/admin/AchievementsPage.tsx";
 import ExperiencesPage from "./pages/admin/ExperiencesPage.tsx";
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminOverview />} />
+              <Route path="sections" element={<HomepageSectionsPage />} />
               <Route path="banners" element={<BannersPage />} />
               <Route path="achievements" element={<AchievementsPage />} />
               <Route path="experiences" element={<ExperiencesPage />} />

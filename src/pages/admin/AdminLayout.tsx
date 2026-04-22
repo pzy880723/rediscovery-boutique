@@ -8,6 +8,7 @@ import AdminLogin from "@/pages/AdminLogin";
 
 const titleMap: Record<string, string> = {
   "/admin": "仪表盘概览",
+  "/admin/sections": "首页区块管理",
   "/admin/banners": "Banner 横幅",
   "/admin/achievements": "品牌成就",
   "/admin/experiences": "品牌体验",
