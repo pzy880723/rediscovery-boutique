@@ -20,6 +20,7 @@ import NewsPage from "./pages/admin/NewsPage.tsx";
 import StoresPage from "./pages/admin/StoresPage.tsx";
 import BrandMatrixPage from "./pages/admin/BrandMatrixPage.tsx";
 import PartnershipPage from "./pages/admin/PartnershipPage.tsx";
+import BrandMatrixDetail from "./pages/BrandMatrixDetail.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/brand-matrix/:slug" element={<BrandMatrixDetail />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminOverview />} />
