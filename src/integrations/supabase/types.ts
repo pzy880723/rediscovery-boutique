@@ -260,6 +260,39 @@ export type Database = {
         }
         Relationships: []
       }
+      homepage_sections: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_visible: boolean
+          name: string
+          section_key: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_visible?: boolean
+          name: string
+          section_key: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_visible?: boolean
+          name?: string
+          section_key?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       news: {
         Row: {
           content: string | null
