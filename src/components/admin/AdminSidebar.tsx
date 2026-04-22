@@ -13,6 +13,7 @@ import {
   Grid3x3,
   Handshake,
   ChevronDown,
+  LayoutPanelTop,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 
@@ -37,7 +38,10 @@ import {
 const groups = [
   {
     label: "概览",
-    items: [{ title: "仪表盘", url: "/admin", icon: LayoutDashboard, end: true }],
+    items: [
+      { title: "仪表盘", url: "/admin", icon: LayoutDashboard, end: true },
+      { title: "首页区块管理", url: "/admin/sections", icon: LayoutPanelTop },
+    ],
   },
   {
     label: "首页内容",
