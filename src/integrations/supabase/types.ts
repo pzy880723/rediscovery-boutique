@@ -119,36 +119,48 @@ export type Database = {
       brand_matrix: {
         Row: {
           area: string
+          cover_image_url: string | null
           created_at: string
           description: string | null
+          gallery_urls: Json
           id: string
           is_active: boolean
           is_launched: boolean
+          long_description: string | null
           positioning: string
+          slug: string
           sort_order: number
           store_type: string
           updated_at: string
         }
         Insert: {
           area: string
+          cover_image_url?: string | null
           created_at?: string
           description?: string | null
+          gallery_urls?: Json
           id?: string
           is_active?: boolean
           is_launched?: boolean
+          long_description?: string | null
           positioning: string
+          slug: string
           sort_order?: number
           store_type: string
           updated_at?: string
         }
         Update: {
           area?: string
+          cover_image_url?: string | null
           created_at?: string
           description?: string | null
+          gallery_urls?: Json
           id?: string
           is_active?: boolean
           is_launched?: boolean
+          long_description?: string | null
           positioning?: string
+          slug?: string
           sort_order?: number
           store_type?: string
           updated_at?: string
