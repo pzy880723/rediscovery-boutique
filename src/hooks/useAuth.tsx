@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext, ReactNode } from "react";
+import { useState, useEffect, useCallback, createContext, useContext, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Session } from "@supabase/supabase-js";
 
@@ -23,41 +23,64 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const checkAdmin = async (userId: string) => {
-    const { data } = await supabase
+  const checkAdmin = useCallback(async (userId: string) => {
+    const { data, error } = await supabase
       .from("user_roles")
       .select("role")
       .eq("user_id", userId)
       .eq("role", "admin")
       .maybeSingle();
-    setIsAdmin(!!data);
-  };
+
+    if (error) {
+      console.error("Failed to check admin role", error);
+      setIsAdmin(false);
+      return false;
+    }
+
+    const hasAdminRole = !!data;
+    setIsAdmin(hasAdminRole);
+    return hasAdminRole;
+  }, []);
+
+  const syncAuthState = useCallback(
+    (nextSession: Session | null) => {
+      setSession(nextSession);
+
+      if (!nextSession?.user) {
+        setIsAdmin(false);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      void checkAdmin(nextSession.user.id).finally(() => {
+        setLoading(false);
+      });
+    },
+    [checkAdmin]
+  );
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session);
-      if (session?.user) {
-        await checkAdmin(session.user.id);
-      } else {
-        setIsAdmin(false);
-      }
-      setLoading(false);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      syncAuthState(nextSession);
     });
 
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      setSession(session);
-      if (session?.user) {
-        await checkAdmin(session.user.id);
-      }
-      setLoading(false);
+    void supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
+      syncAuthState(initialSession);
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [syncAuthState]);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error: error?.message || null };
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      return { error: error?.message || null };
+    } catch (err) {
+      return { error: err instanceof Error ? err.message : "登录失败，请稍后重试" };
+    }
   };
 
   const signOut = async () => {
