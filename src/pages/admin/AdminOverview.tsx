@@ -186,7 +186,7 @@ const AdminOverview = () => {
             <div className="space-y-2 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <CardTitle className="text-lg truncate">{email}</CardTitle>
-                <Badge className="bg-green-600 hover:bg-green-600 text-white gap-1">
+                <Badge className="gap-1">
                   <CheckCircle2 className="w-3 h-3" />admin
                 </Badge>
               </div>
