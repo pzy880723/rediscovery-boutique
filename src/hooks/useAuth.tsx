@@ -2,11 +2,16 @@ import { useState, useEffect, useCallback, createContext, useContext, ReactNode 
 import { supabase } from "@/integrations/supabase/client";
 import type { Session } from "@supabase/supabase-js";
 
+interface SignInResult {
+  error: string | null;
+  isAdmin: boolean;
+}
+
 interface AuthContextType {
   session: Session | null;
   isAdmin: boolean;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+  signIn: (email: string, password: string) => Promise<SignInResult>;
   signOut: () => Promise<void>;
 }
 
@@ -74,12 +79,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => subscription.unsubscribe();
   }, [syncAuthState]);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string): Promise<SignInResult> => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      return { error: error?.message || null };
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        return { error: error.message, isAdmin: false };
+      }
+
+      if (!data.session?.user) {
+        return { error: "未能建立登录会话，请稍后重试。", isAdmin: false };
+      }
+
+      setSession(data.session);
+      const hasAdminRole = await checkAdmin(data.session.user.id);
+      setLoading(false);
+
+      return { error: null, isAdmin: hasAdminRole };
     } catch (err) {
-      return { error: err instanceof Error ? err.message : "登录失败，请稍后重试" };
+      return {
+        error: err instanceof Error ? err.message : "登录失败，请稍后重试",
+        isAdmin: false,
+      };
     }
   };
 
@@ -87,6 +108,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await supabase.auth.signOut();
     setSession(null);
     setIsAdmin(false);
+    setLoading(false);
   };
 
   return (

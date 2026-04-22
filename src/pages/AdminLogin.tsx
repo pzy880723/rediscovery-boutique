@@ -31,45 +31,30 @@ const translateAuthError = (msg: string): string => {
 };
 
 const AdminLogin = () => {
-  const { signIn, signOut, session, isAdmin, loading: authLoading } = useAuth();
+  const { signIn, signOut, session, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [phase, setPhase] = useState<Phase>("idle");
-  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    if (!authLoading && session && isAdmin) {
+    if (session && isAdmin) {
       setPhase("success");
-      setSubmitted(false);
       navigate("/admin", { replace: true });
     }
-  }, [authLoading, session, isAdmin, navigate]);
-
-  useEffect(() => {
-    if (submitted && !authLoading && session && !isAdmin && phase === "checking-role") {
-      setError(
-        "该账号已通过身份验证，但未分配管理员权限，因此无法进入后台。请联系管理员授予 admin 角色。"
-      );
-      setPhase("idle");
-      setSubmitted(false);
-      setPassword("");
-      void signOut();
-    }
-  }, [submitted, authLoading, session, isAdmin, phase, signOut]);
+  }, [session, isAdmin, navigate]);
 
   useEffect(() => {
     if (phase !== "authenticating" && phase !== "checking-role") return;
 
     const timeoutId = window.setTimeout(() => {
-      if (phase === "authenticating") {
-        setError("登录请求超时，未能成功获取登录 token，请检查网络或稍后重试。");
-      } else {
-        setError("账号已验证，但管理员权限校验超时，请刷新页面后重试。");
-      }
+      setError(
+        phase === "authenticating"
+          ? "登录请求超时，未能成功获取登录 token，请检查网络或稍后重试。"
+          : "账号已验证，但管理员权限校验超时，请刷新页面后重试。"
+      );
       setPhase("idle");
-      setSubmitted(false);
       setPassword("");
     }, 10000);
 
@@ -79,20 +64,29 @@ const AdminLogin = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    setSubmitted(true);
     setPhase("authenticating");
 
-    const { error: signInError } = await signIn(email.trim(), password);
+    const result = await signIn(email.trim(), password);
 
-    if (signInError) {
-      setError(translateAuthError(signInError));
+    if (result.error) {
+      setError(translateAuthError(result.error));
       setPhase("idle");
-      setSubmitted(false);
       setPassword("");
       return;
     }
 
     setPhase("checking-role");
+
+    if (!result.isAdmin) {
+      setError("该账号已通过身份验证，但未分配管理员权限，因此无法进入后台。请联系管理员授予 admin 角色。");
+      setPhase("idle");
+      setPassword("");
+      void signOut();
+      return;
+    }
+
+    setPhase("success");
+    navigate("/admin", { replace: true });
   };
 
   const isBusy = phase === "authenticating" || phase === "checking-role" || phase === "success";
