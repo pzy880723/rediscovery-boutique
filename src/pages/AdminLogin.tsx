@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,19 +7,31 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const AdminLogin = () => {
-  const { signIn } = useAuth();
+  const { signIn, session, isAdmin, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // 已登录的管理员自动跳转到后台
+  useEffect(() => {
+    if (!authLoading && session && isAdmin) {
+      navigate("/admin", { replace: true });
+    }
+  }, [authLoading, session, isAdmin, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     const { error } = await signIn(email, password);
-    if (error) setError(error);
-    setLoading(false);
+    if (error) {
+      setError(error);
+      setLoading(false);
+      return;
+    }
+    // 登录成功，跳转由上面的 useEffect 处理
   };
 
   return (
