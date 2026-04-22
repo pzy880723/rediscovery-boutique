@@ -14,6 +14,75 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          label: string
+          sort_order: number
+          sublabel: string | null
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          label: string
+          sort_order?: number
+          sublabel?: string | null
+          updated_at?: string
+          value: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          label?: string
+          sort_order?: number
+          sublabel?: string | null
+          updated_at?: string
+          value?: string
+        }
+        Relationships: []
+      }
+      audience_segments: {
+        Row: {
+          created_at: string
+          icon_name: string | null
+          id: string
+          is_active: boolean
+          name: string
+          preference: string | null
+          scene: string | null
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          preference?: string | null
+          scene?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          icon_name?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          preference?: string | null
+          scene?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       banners: {
         Row: {
           created_at: string
@@ -47,6 +116,45 @@ export type Database = {
         }
         Relationships: []
       }
+      brand_matrix: {
+        Row: {
+          area: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          is_launched: boolean
+          positioning: string
+          sort_order: number
+          store_type: string
+          updated_at: string
+        }
+        Insert: {
+          area: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          is_launched?: boolean
+          positioning: string
+          sort_order?: number
+          store_type: string
+          updated_at?: string
+        }
+        Update: {
+          area?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          is_launched?: boolean
+          positioning?: string
+          sort_order?: number
+          store_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       categories: {
         Row: {
           created_at: string
@@ -73,6 +181,45 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          sort_order?: number
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      experience_items: {
+        Row: {
+          created_at: string
+          description: string | null
+          icon_name: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          sort_order: number
+          subtitle: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          icon_name?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          sort_order?: number
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          icon_name?: string | null
           id?: string
           image_url?: string | null
           is_active?: boolean
@@ -142,6 +289,81 @@ export type Database = {
           is_published?: boolean
           published_at?: string | null
           title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      partnership_info: {
+        Row: {
+          conditions: Json
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string
+          experience_center_address: string | null
+          id: string
+          intro: string | null
+          is_active: boolean
+          updated_at: string
+        }
+        Insert: {
+          conditions?: Json
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          experience_center_address?: string | null
+          id?: string
+          intro?: string | null
+          is_active?: boolean
+          updated_at?: string
+        }
+        Update: {
+          conditions?: Json
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          experience_center_address?: string | null
+          id?: string
+          intro?: string | null
+          is_active?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      press_quotes: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          link_url: string | null
+          media_name: string
+          quote_original: string
+          quote_translation: string | null
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          link_url?: string | null
+          media_name: string
+          quote_original: string
+          quote_translation?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          link_url?: string | null
+          media_name?: string
+          quote_original?: string
+          quote_translation?: string | null
+          sort_order?: number
           updated_at?: string
         }
         Relationships: []
