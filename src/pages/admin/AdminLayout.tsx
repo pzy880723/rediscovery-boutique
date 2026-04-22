@@ -1,7 +1,7 @@
 import { useAuth } from "@/hooks/useAuth";
-import { Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import { ExternalLink, LogOut } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminLogin from "@/pages/AdminLogin";
@@ -61,9 +61,18 @@ const AdminLayout = () => {
                 <SidebarTrigger />
                 <h1 className="font-display font-semibold text-base truncate">{pageTitle}</h1>
               </div>
-              <Button variant="ghost" size="sm" onClick={signOut} className="gap-1 shrink-0">
-                <LogOut className="w-4 h-4" />退出
-              </Button>
+              <div className="flex items-center gap-1 shrink-0">
+                <Button variant="outline" size="sm" asChild className="gap-1">
+                  <Link to="/" target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="w-4 h-4" />
+                    <span className="hidden sm:inline">查看官网</span>
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" onClick={signOut} className="gap-1">
+                  <LogOut className="w-4 h-4" />
+                  <span className="hidden sm:inline">退出</span>
+                </Button>
+              </div>
             </div>
           </header>
           <main className="flex-1 overflow-auto">
