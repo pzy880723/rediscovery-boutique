@@ -16,14 +16,14 @@ const HeroSection = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="relative z-10 text-center max-w-2xl"
       >
-        <p className="font-display text-xl md:text-2xl text-white tracking-wider">
-          与时光重逢，发现日常惊喜。
+        <p className="font-display text-2xl md:text-4xl text-white tracking-wider font-bold">
+          虽古但新，信任可见。
         </p>
         <p className="mt-3 text-sm text-white/70 italic tracking-wide">
           Reunite with Time, Discover Everyday Surprises.
         </p>
-        <p className="mt-8 text-sm md:text-base text-white/80 leading-relaxed max-w-lg mx-auto">
-          国内首家标准化中古杂货铺，为全年龄段的你，打造一个充满惊喜的宝藏世界。
+        <p className="mt-8 text-sm md:text-base text-white/85 leading-relaxed max-w-lg mx-auto">
+          国内首家标准化中古连锁店，为全年龄段的你，打造一个充满惊喜的宝藏世界。
         </p>
       </motion.div>
 

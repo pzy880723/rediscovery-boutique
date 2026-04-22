@@ -8,6 +8,12 @@ import CategoryManager from "@/components/admin/CategoryManager";
 import NewsManager from "@/components/admin/NewsManager";
 import StoreManager from "@/components/admin/StoreManager";
 import GalleryManager from "@/components/admin/GalleryManager";
+import AchievementManager from "@/components/admin/AchievementManager";
+import ExperienceManager from "@/components/admin/ExperienceManager";
+import AudienceManager from "@/components/admin/AudienceManager";
+import PressManager from "@/components/admin/PressManager";
+import BrandMatrixManager from "@/components/admin/BrandMatrixManager";
+import PartnershipManager from "@/components/admin/PartnershipManager";
 import AdminLogin from "@/pages/AdminLogin";
 
 const AdminDashboard = () => {
@@ -52,10 +58,16 @@ const AdminDashboard = () => {
 
       <main className="max-w-5xl mx-auto px-6 py-8 space-y-8">
         <BannerManager />
+        <AchievementManager />
+        <ExperienceManager />
         <CategoryManager />
+        <AudienceManager />
+        <PressManager />
         <GalleryManager />
         <NewsManager />
         <StoreManager />
+        <BrandMatrixManager />
+        <PartnershipManager />
       </main>
     </div>
   );
