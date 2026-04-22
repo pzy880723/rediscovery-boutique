@@ -63,28 +63,6 @@ const PartnershipSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.5 }}
-            className="p-6 md:p-7 rounded-xl border border-background/15 bg-background/5"
-          >
-            <h3 className="font-display text-lg font-bold mb-5 text-primary">
-              标准店合作条件
-            </h3>
-            <ul className="space-y-3">
-              {conditions.map((c) => (
-                <li key={c.label} className="flex flex-col gap-0.5 pb-3 border-b border-background/10 last:border-0 last:pb-0">
-                  <span className="text-xs text-background/50 uppercase tracking-wider">
-                    {c.label}
-                  </span>
-                  <span className="text-sm text-background">{c.value}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5 }}
             className="p-6 md:p-7 rounded-xl bg-primary text-primary-foreground"
           >
             <h3 className="font-display text-lg font-bold mb-5">
@@ -125,6 +103,29 @@ const PartnershipSection = () => {
             </div>
             <p className="text-xs opacity-75 mt-6 pt-4 border-t border-primary-foreground/20">
               欢迎招商、加盟、品牌合作洽谈。
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5 }}
+            className="p-6 md:p-7 rounded-xl bg-primary text-primary-foreground flex flex-col items-center justify-center text-center"
+          >
+            <h3 className="font-display text-lg font-bold mb-5">
+              微信扫码 · 直接联系
+            </h3>
+            <img
+              src={wechatQr}
+              alt="BOOMER OFF 招商微信二维码"
+              className="w-44 h-44 md:w-52 md:h-52 object-contain"
+            />
+            <p className="text-xs opacity-80 mt-5 tracking-wider uppercase">
+              Scan to Connect on WeChat
+            </p>
+            <p className="text-sm mt-1 font-medium">
+              长按或扫描二维码添加招商负责人
             </p>
           </motion.div>
         </div>
