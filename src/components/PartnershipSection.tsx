@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Phone, MapPin, User, Handshake } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import wechatQr from "@/assets/wechat-qr-white.png";
 
 type PartnershipInfo = {
   id: string;
