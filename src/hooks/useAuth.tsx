@@ -4,7 +4,7 @@ import type { Session } from "@supabase/supabase-js";
 
 interface SignInResult {
   error: string | null;
-  isAdmin: boolean;
+  session: Session | null;
 }
 
 interface AuthContextType {
@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [authReady, setAuthReady] = useState(false);
 
   const checkAdmin = useCallback(async (userId: string) => {
     const { data, error } = await supabase
@@ -38,68 +39,60 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     if (error) {
       console.error("Failed to check admin role", error);
-      setIsAdmin(false);
       return false;
     }
 
-    const hasAdminRole = !!data;
-    setIsAdmin(hasAdminRole);
-    return hasAdminRole;
+    return !!data;
   }, []);
-
-  const syncAuthState = useCallback(
-    (nextSession: Session | null) => {
-      setSession(nextSession);
-
-      if (!nextSession?.user) {
-        setIsAdmin(false);
-        setLoading(false);
-        return;
-      }
-
-      setLoading(true);
-      void checkAdmin(nextSession.user.id).finally(() => {
-        setLoading(false);
-      });
-    },
-    [checkAdmin]
-  );
 
   useEffect(() => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      syncAuthState(nextSession);
+      setSession(nextSession);
+      setAuthReady(true);
     });
 
     void supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
-      syncAuthState(initialSession);
+      setSession(initialSession);
+      setAuthReady(true);
     });
 
     return () => subscription.unsubscribe();
-  }, [syncAuthState]);
+  }, []);
+
+  useEffect(() => {
+    if (!authReady) return;
+
+    if (!session?.user) {
+      setIsAdmin(false);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    void checkAdmin(session.user.id)
+      .then((hasAdminRole) => {
+        setIsAdmin(hasAdminRole);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [authReady, session, checkAdmin]);
 
   const signIn = async (email: string, password: string): Promise<SignInResult> => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
       if (error) {
-        return { error: error.message, isAdmin: false };
+        return { error: error.message, session: null };
       }
 
-      if (!data.session?.user) {
-        return { error: "未能建立登录会话，请稍后重试。", isAdmin: false };
-      }
-
-      setSession(data.session);
-      const hasAdminRole = await checkAdmin(data.session.user.id);
-      setLoading(false);
-
-      return { error: null, isAdmin: hasAdminRole };
+      return { error: null, session: data.session ?? null };
     } catch (err) {
       return {
         error: err instanceof Error ? err.message : "登录失败，请稍后重试",
-        isAdmin: false,
+        session: null,
       };
     }
   };
@@ -109,6 +102,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setSession(null);
     setIsAdmin(false);
     setLoading(false);
+    setAuthReady(true);
   };
 
   return (

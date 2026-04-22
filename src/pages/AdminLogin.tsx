@@ -31,7 +31,7 @@ const translateAuthError = (msg: string): string => {
 };
 
 const AdminLogin = () => {
-  const { signIn, signOut, session, isAdmin } = useAuth();
+  const { signIn, signOut, session, isAdmin, loading } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,11 +39,19 @@ const AdminLogin = () => {
   const [phase, setPhase] = useState<Phase>("idle");
 
   useEffect(() => {
-    if (session && isAdmin) {
-      setPhase("success");
-      navigate("/admin", { replace: true });
+    if (phase === "checking-role" && session && !loading) {
+      if (isAdmin) {
+        setPhase("success");
+        navigate("/admin", { replace: true });
+        return;
+      }
+
+      setError("该账号已通过身份验证，但未分配管理员权限，因此无法进入后台。请联系管理员授予 admin 角色。");
+      setPhase("idle");
+      setPassword("");
+      void signOut();
     }
-  }, [session, isAdmin, navigate]);
+  }, [phase, session, loading, isAdmin, navigate, signOut]);
 
   useEffect(() => {
     if (phase !== "authenticating" && phase !== "checking-role") return;
@@ -75,18 +83,14 @@ const AdminLogin = () => {
       return;
     }
 
-    setPhase("checking-role");
-
-    if (!result.isAdmin) {
-      setError("该账号已通过身份验证，但未分配管理员权限，因此无法进入后台。请联系管理员授予 admin 角色。");
+    if (!result.session) {
+      setError("登录成功，但未能建立有效会话，请刷新页面后重试。");
       setPhase("idle");
       setPassword("");
-      void signOut();
       return;
     }
 
-    setPhase("success");
-    navigate("/admin", { replace: true });
+    setPhase("checking-role");
   };
 
   const isBusy = phase === "authenticating" || phase === "checking-role" || phase === "success";
