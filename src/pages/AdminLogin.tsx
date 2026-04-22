@@ -22,7 +22,7 @@ const translateAuthError = (msg: string): string => {
     return "登录尝试过于频繁，请稍后再试。";
   }
   if (m.includes("network") || m.includes("failed to fetch")) {
-    return "网络连接失败，请检查网络后重试。";
+    return "网络连接失败，无法获取登录 token，请检查网络后重试。";
   }
   if (m.includes("user not found")) {
     return "未找到该账号，请确认邮箱是否正确。";
@@ -39,26 +39,42 @@ const AdminLogin = () => {
   const [phase, setPhase] = useState<Phase>("idle");
   const [submitted, setSubmitted] = useState(false);
 
-  // 已登录的管理员自动跳转到后台
   useEffect(() => {
     if (!authLoading && session && isAdmin) {
       setPhase("success");
+      setSubmitted(false);
       navigate("/admin", { replace: true });
     }
   }, [authLoading, session, isAdmin, navigate]);
 
-  // 登录成功但角色不是管理员：明确提示，并清空密码
   useEffect(() => {
     if (submitted && !authLoading && session && !isAdmin && phase === "checking-role") {
       setError(
-        "该账号已登录成功，但没有管理员权限。请联系系统管理员授予 admin 角色，或更换其他管理员账号登录。"
+        "该账号已通过身份验证，但未分配管理员权限，因此无法进入后台。请联系管理员授予 admin 角色。"
       );
       setPhase("idle");
+      setSubmitted(false);
       setPassword("");
-      // 退出当前非管理员会话，避免侧栏被误判为已登录
-      signOut();
+      void signOut();
     }
   }, [submitted, authLoading, session, isAdmin, phase, signOut]);
+
+  useEffect(() => {
+    if (phase !== "authenticating" && phase !== "checking-role") return;
+
+    const timeoutId = window.setTimeout(() => {
+      if (phase === "authenticating") {
+        setError("登录请求超时，未能成功获取登录 token，请检查网络或稍后重试。");
+      } else {
+        setError("账号已验证，但管理员权限校验超时，请刷新页面后重试。");
+      }
+      setPhase("idle");
+      setSubmitted(false);
+      setPassword("");
+    }, 10000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [phase]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,11 +87,11 @@ const AdminLogin = () => {
     if (signInError) {
       setError(translateAuthError(signInError));
       setPhase("idle");
-      setPassword(""); // 失败时只清密码，保留邮箱
+      setSubmitted(false);
+      setPassword("");
       return;
     }
 
-    // 登录成功后，等待 useAuth 校验 admin 角色
     setPhase("checking-role");
   };
 
@@ -142,9 +158,15 @@ const AdminLogin = () => {
               {buttonLabel}
             </Button>
 
+            {phase === "authenticating" && (
+              <p className="text-xs text-muted-foreground text-center">
+                正在请求登录凭证并验证账号，请稍候…
+              </p>
+            )}
+
             {phase === "checking-role" && (
               <p className="text-xs text-muted-foreground text-center">
-                正在校验账号是否具备管理员权限，请稍候…
+                账号已验证，正在校验是否具备管理员权限，请稍候…
               </p>
             )}
           </form>
