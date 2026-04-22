@@ -33,6 +33,9 @@ const AboutSection = () => {
             <p className="font-display text-foreground text-base md:text-lg mt-8">
               我们相信，每一次相遇，都是久别重逢。
             </p>
+            <p className="text-xs tracking-[0.2em] uppercase text-primary mt-2">
+              国内首家标准化中古连锁店 · Standardized Vintage Chain
+            </p>
           </div>
         </motion.div>
       </div>

@@ -7,6 +7,7 @@ const navItems = [
   { label: "品牌理念", href: "#philosophy" },
   { label: "时间的宝藏", href: "#categories" },
   { label: "门店信息", href: "#stores" },
+  { label: "招商加盟", href: "#partnership" },
 ];
 
 const Navbar = () => {
