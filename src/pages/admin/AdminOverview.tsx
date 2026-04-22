@@ -121,14 +121,24 @@ const AdminOverview = () => {
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
+      const client = supabase as unknown as {
+        from: (table: string) => {
+          select: (
+            columns: string,
+            options: { count: "exact"; head: true },
+          ) => Promise<{ count: number | null }> & {
+            eq: (column: string, value: unknown) => Promise<{ count: number | null }>;
+          };
+        };
+      };
       const results = await Promise.all(
         statConfigs.map(async (c) => {
-          const totalRes = await supabase
+          const totalRes = await client
             .from(c.table)
             .select("*", { count: "exact", head: true });
           let secondary: number | null = null;
           if (c.secondaryFilter) {
-            const secRes = await supabase
+            const secRes = await client
               .from(c.table)
               .select("*", { count: "exact", head: true })
               .eq(c.secondaryFilter.column, c.secondaryFilter.value);
